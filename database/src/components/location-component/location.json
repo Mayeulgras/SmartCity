@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_location_component_locations",
+  "info": {
+    "displayName": "location"
+  },
+  "options": {},
+  "attributes": {
+    "lat": {
+      "type": "decimal"
+    },
+    "lon": {
+      "type": "decimal"
+    }
+  }
+}

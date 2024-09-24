@@ -1,0 +1,78 @@
+{
+  "kind": "collectionType",
+  "collectionName": "parcs",
+  "info": {
+    "singularName": "parc",
+    "pluralName": "parcs",
+    "displayName": "Parc"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "idobj": {
+      "type": "string"
+    },
+    "nom_complet": {
+      "type": "string"
+    },
+    "libtype": {
+      "type": "string"
+    },
+    "adresse": {
+      "type": "string"
+    },
+    "code_postal": {
+      "type": "string"
+    },
+    "commune": {
+      "type": "string"
+    },
+    "location": {
+      "displayName": "location",
+      "type": "component",
+      "repeatable": false,
+      "component": "location-component.location"
+    },
+    "siteweb": {
+      "type": "string"
+    },
+    "acces_transport_commun": {
+      "type": "string"
+    },
+    "informations_complementaires": {
+      "type": "string"
+    },
+    "gardien": {
+      "type": "string"
+    },
+    "jeux_enfants": {
+      "type": "string"
+    },
+    "pataugeoire": {
+      "type": "string"
+    },
+    "sanitaires": {
+      "type": "string"
+    },
+    "sanitaires_handicapes": {
+      "type": "string"
+    },
+    "chiens_autorises": {
+      "type": "string"
+    },
+    "jardin_clos": {
+      "type": "string"
+    },
+    "abris": {
+      "type": "string"
+    },
+    "point_eau_potable": {
+      "type": "string"
+    },
+    "table_pique_nique": {
+      "type": "string"
+    }
+  }
+}
