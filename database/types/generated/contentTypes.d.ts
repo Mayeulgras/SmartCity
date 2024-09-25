@@ -1,11 +1,39 @@
 import type { Struct, Schema } from '@strapi/strapi';
 
+export interface ApiAlerteAlerte extends Struct.CollectionTypeSchema {
+  collectionName: 'alertes';
+  info: {
+    singularName: 'alerte';
+    pluralName: 'alertes';
+    displayName: 'Alerte';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    category: Schema.Attribute.String;
+    description: Schema.Attribute.Text;
+    photo: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    parcs: Schema.Attribute.Relation<'manyToMany', 'api::parc.parc'>;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::alerte.alerte'>;
+  };
+}
+
 export interface ApiParcParc extends Struct.CollectionTypeSchema {
   collectionName: 'parcs';
   info: {
     singularName: 'parc';
     pluralName: 'parcs';
     displayName: 'Parc';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -31,6 +59,7 @@ export interface ApiParcParc extends Struct.CollectionTypeSchema {
     abris: Schema.Attribute.String;
     point_eau_potable: Schema.Attribute.String;
     table_pique_nique: Schema.Attribute.String;
+    alertes: Schema.Attribute.Relation<'manyToMany', 'api::alerte.alerte'>;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -893,6 +922,7 @@ export interface AdminTransferTokenPermission
 declare module '@strapi/strapi' {
   export module Public {
     export interface ContentTypeSchemas {
+      'api::alerte.alerte': ApiAlerteAlerte;
       'api::parc.parc': ApiParcParc;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;

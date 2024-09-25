@@ -4,7 +4,8 @@
   "info": {
     "singularName": "parc",
     "pluralName": "parcs",
-    "displayName": "Parc"
+    "displayName": "Parc",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -73,6 +74,12 @@
     },
     "table_pique_nique": {
       "type": "string"
+    },
+    "alertes": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::alerte.alerte",
+      "mappedBy": "parcs"
     }
   }
 }

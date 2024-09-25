@@ -1,10 +1,13 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import AlertList from './Alert';
 
 const { height } = Dimensions.get('window');
 
 const Card = ({ data, onClose }) => {
+console.log(data);
+
   return (
     <View style={styles.card}>
       <TouchableOpacity onPress={onClose} style={styles.closeButton}>
@@ -13,6 +16,8 @@ const Card = ({ data, onClose }) => {
       <Text style={styles.title}>{data.nom_complet}</Text>
       <Text style={styles.description}>{data.adresse}</Text>
       <Text style={styles.description}>{data.code_postal}</Text>
+
+      <AlertList alertes={data.alertes} />
     </View>
   );
 };
@@ -20,13 +25,13 @@ const Card = ({ data, onClose }) => {
 const styles = StyleSheet.create({
   card: {
     width: '100%',
-    height: height * 0.9,
+    height: height * 0.8,
     padding: 20,
     backgroundColor: 'white',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     alignItems: 'center',
-    marginTop: height * 0.1,
+    marginTop: height * 0.2,
     position: 'relative',
   },
   closeButton: {
