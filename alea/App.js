@@ -7,10 +7,10 @@ import HomeScreen from './pages/Home';
 import PhotoScreen from './pages/Photo';
 import Navbar from './components/NavBar';
 import Header from './components/Header';
-
+ 
 // fonction qui m'offre la possibilité de naviguer entre les pages
-const Tab = createBottomTabNavigator(); 
-
+const Tab = createBottomTabNavigator();
+ 
 export default function App() {
   return (
     // composant navbar qui affiche les pages en fonction de l'icon cliqué, ajout de la navbar perso dans tab.navigator
@@ -23,7 +23,7 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
+ 
 // page home avec le header de la page home
 const HomeScreenWithHeader = () => (
   <View style={styles.container}>
@@ -31,7 +31,7 @@ const HomeScreenWithHeader = () => (
     <HomeScreen />
   </View>
 );
-
+ 
 // page photo avec le header de la page photo
 const PhotoScreenWithHeader = () => (
   <View style={styles.container}>
@@ -39,7 +39,7 @@ const PhotoScreenWithHeader = () => (
     <PhotoScreen />
   </View>
 );
-
+ 
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -1,12 +1,14 @@
-import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Button } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import AlertList from './Alert';
+import Form from './Form';
+import AlertList from './Alert'
 
 const { height } = Dimensions.get('window');
 
 const Card = ({ data, onClose }) => {
-console.log(data);
+  const [showForm, setShowForm] = useState(false);
+  console.log(data);
 
   return (
     <View style={styles.card}>
@@ -16,12 +18,12 @@ console.log(data);
       <Text style={styles.title}>{data.nom_complet}</Text>
       <Text style={styles.description}>{data.adresse}</Text>
       <Text style={styles.description}>{data.code_postal}</Text>
-
+      <Button title='Signaler un problème' onPress={() => setShowForm(true)} />
+      {showForm && <Form setShowForm={setShowForm} />}
       <AlertList alertes={data.alertes} />
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   card: {
     width: '100%',
