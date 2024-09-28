@@ -1,35 +1,47 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Modal, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Modal, ActivityIndicator, Image } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import axios from 'axios';
 import Card from './Card';
- 
- 
+
 export default function Map({ searchQuery }) {
-  // etat qui contient les marqueurs, les met a jour et les initialise avec un tableau vide
   const [markers, setMarkers] = useState([]);
-  // etat qui contient le marqueur selectionné, le met a jour et l'initialise avec null
   const [selectedMarker, setSelectedMarker] = useState(null);
-  // etat qui contient le chargement, le met a jour et l'initialise avec true
   const [loading, setLoading] = useState(true);
-  // etat qui contient le marqueur centré, le met a jour et l'initialise avec null (aucun marqueur ne sera sélectionné au début)
   const [centeredMarker, setCenteredMarker] = useState(null);
- 
+
   useEffect(() => {
     const fetchAllParks = async () => {
       let allMarkers = [];
       let page = 1;
       let hasMore = true;
- 
+
       while (hasMore) {
         try {
-          const response = await axios.get(`http://192.168.0.12:1337/api/parcs?pagination[page]=${page}&pagination[pageSize]=100&populate=*`);
+          // Première requête pour récupérer les parcs avec leurs localisations
+          const response = await axios.get(`http://192.168.0.12:1337/api/parcs?pagination[page]=${page}&pagination[pageSize]=100&populate[location]=*`);
+          // Deuxième requête pour récupérer les alertes avec les photos
+          const response_2 = await axios.get(`http://192.168.0.12:1337/api/parcs?pagination[page]=${page}&pagination[pageSize]=100&populate[alertes][populate]=photo`);
+
           const fetchedMarkers = response.data.data;
- 
-          allMarkers = [...allMarkers, ...fetchedMarkers];
- 
+          const fetchedAlertes = response_2.data.data;
+
+          // Fusionner les parcs et leurs alertes
+          const mergedMarkers = fetchedMarkers.map((marker, index) => {
+            const alertes = fetchedAlertes[index]?.alertes.map(alerte => ({
+              ...alerte,
+              photoName: alerte.photo?.name || null, // Inclure le champ name des photos
+            })) || [];
+            return {
+              ...marker,
+              alertes, // Inclure les alertes dans le marqueur
+            };
+          });
+
+          allMarkers = [...allMarkers, ...mergedMarkers];
+
           console.log(`Page ${page}: récupérés ${fetchedMarkers.length} éléments`);
- 
+
           if (fetchedMarkers.length < 100) {
             hasMore = false;
           } else {
@@ -41,22 +53,21 @@ export default function Map({ searchQuery }) {
           hasMore = false;
         }
       }
- 
+
       console.log(`Total des éléments récupérés: ${allMarkers.length}`);
       setMarkers(allMarkers);
       setLoading(false);
     };
- 
+
     fetchAllParks();
   }, []);
- 
+
   useEffect(() => {
     if (searchQuery) {
-     
-      const foundMarker = markers.find(marker =>
+      const foundMarker = markers.find(marker => 
         marker.nom_complet.toLowerCase().includes(searchQuery.toLowerCase())
       );
- 
+
       if (foundMarker) {
         setCenteredMarker(foundMarker);
       } else {
@@ -64,17 +75,17 @@ export default function Map({ searchQuery }) {
       }
     } else {
       setCenteredMarker(null);
-    } // cela permet d'exécuter cet effet a chaque fois que la recherche change ou que markers change
+    }
   }, [searchQuery, markers]);
- 
+
   const handleMarkerPress = (marker) => {
     setSelectedMarker(marker);
   };
- 
+
   const handleCloseModal = () => {
     setSelectedMarker(null);
   };
- 
+
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -82,7 +93,7 @@ export default function Map({ searchQuery }) {
       </View>
     );
   }
- 
+
   return (
     <View style={styles.container}>
       <MapView
@@ -93,7 +104,6 @@ export default function Map({ searchQuery }) {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
-       
         region={centeredMarker ? {
           latitude: centeredMarker.location.lat,
           longitude: centeredMarker.location.lon,
@@ -109,10 +119,11 @@ export default function Map({ searchQuery }) {
               longitude: marker.location.lon,
             }}
             onPress={() => handleMarkerPress(marker)}
-          />
+          >
+          </Marker>
         ))}
       </MapView>
- 
+
       {selectedMarker && (
         <Modal
           animationType="slide"
@@ -128,7 +139,7 @@ export default function Map({ searchQuery }) {
     </View>
   );
 }
- 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -140,5 +151,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  markerImage: {
+    width: 30,
+    height: 30,
+    resizeMode: 'contain',
   },
 });

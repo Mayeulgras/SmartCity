@@ -6,6 +6,7 @@ export interface ApiAlerteAlerte extends Struct.CollectionTypeSchema {
     singularName: 'alerte';
     pluralName: 'alertes';
     displayName: 'Alerte';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -15,6 +16,8 @@ export interface ApiAlerteAlerte extends Struct.CollectionTypeSchema {
     description: Schema.Attribute.Text;
     photo: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     parcs: Schema.Attribute.Relation<'manyToMany', 'api::parc.parc'>;
+    nom_complet: Schema.Attribute.String;
+    viewCount: Schema.Attribute.Integer;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;

@@ -3,6 +3,7 @@ import { StyleSheet, View, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'; 
 
 const SearchBar = ({ searchQuery, setSearchQuery }) => {
+    // searchbar avec une icone
   return (
     <View style={styles.container}>
       <Icon name="search" size={20} color="#888" style={styles.icon} />

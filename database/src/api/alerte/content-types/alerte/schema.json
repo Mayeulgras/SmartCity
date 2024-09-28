@@ -4,7 +4,8 @@
   "info": {
     "singularName": "alerte",
     "pluralName": "alertes",
-    "displayName": "Alerte"
+    "displayName": "Alerte",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -18,20 +19,27 @@
       "type": "text"
     },
     "photo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     },
     "parcs": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::parc.parc",
       "inversedBy": "alertes"
+    },
+    "nom_complet": {
+      "type": "string"
+    },
+    "viewCount": {
+      "type": "integer"
     }
   }
 }
