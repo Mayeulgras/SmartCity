@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { Text, View, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import RNPickerSelect from 'react-native-picker-select';
 import axios from 'axios';
@@ -77,6 +77,7 @@ const PostInfo = async (data) => {
     });
 
     console.log('Alerte créée avec succès:', response.data);
+    Alert.alert("Succès", "L'alerte a été créée avec succès. \n \nRechargez l'application pour voir votre alerte !", [{ text: 'OK' }]);
   } catch (error) {
     console.error('Erreur lors de la création de l\'alerte:', error.response ? error.response.data : error.message);
   }
@@ -114,19 +115,22 @@ const Form = ({ setShowForm, nomComplet, IdObj }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      <View style={styles.form}>
         <TouchableOpacity onPress={() => setShowForm(false)} style={styles.closeButton}>
           <Ionicons name="close" size={24} color="black" />
         </TouchableOpacity>
-      </View>
-      <View style={styles.form}>
+
+        <Text style={styles.label}>Description du problème</Text>
         <TextInput
-          placeholder="Description du problème"
+          placeholder="Décrivez le problème ici..."
           style={styles.input}
           value={description}
           onChangeText={setDescription}
+          multiline
+          numberOfLines={3}
         />
 
+        <Text style={styles.label}>Catégorie</Text>
         <RNPickerSelect
           onValueChange={(value) => setCategory(value)}
           items={[
@@ -152,6 +156,7 @@ const Form = ({ setShowForm, nomComplet, IdObj }) => {
 
         <TouchableOpacity style={styles.photoButton} onPress={pickImage}>
           <Ionicons name="camera" style={styles.photoIcon} />
+          <Text style={styles.photoButtonText}>Ajouter une photo</Text>
         </TouchableOpacity>
 
         {image && <Image source={{ uri: image }} style={styles.imagePreview} />}
@@ -170,66 +175,86 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#f5f5f5',
-  },
-  header: {
-    width: '100%',
-    alignItems: 'flex-end',
-    marginBottom: 10,
-  },
-  closeButton: {
-    padding: 10,
+    backgroundColor: 'transparent',
   },
   form: {
     width: '100%',
     padding: 20,
-    backgroundColor: 'white',
+    backgroundColor: '#ffffff',
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
-    shadowRadius: 2,
+    shadowRadius: 4,
     elevation: 5,
   },
+  closeButton: {
+    alignSelf: 'flex-end', // Aligner à droite
+    marginBottom: 10,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    color: '#333',
+  },
   input: {
-    height: 40,
+    height: 80,
     borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 10,
+    backgroundColor: '#f9f9f9',
   },
   photoButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#4285F4',
-    justifyContent: 'center',
+    flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: '#4285F4',
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 25,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 2,
-    elevation: 5,
     marginTop: 20,
     marginBottom: 20,
   },
   photoIcon: {
     color: 'white',
     fontSize: 24,
+    marginRight: 10,
+  },
+  photoButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   button: {
     backgroundColor: '#4285F4',
-    paddingVertical: 10,
+    paddingVertical: 12,
     paddingHorizontal: 20,
-    borderRadius: 5,
+    borderRadius: 25, // Arrondir les bords du bouton "Envoyer l'alerte"
     alignItems: 'center',
     marginVertical: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    elevation: 5,
   },
   buttonText: {
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  imagePreview: {
+    width: '100%',
+    height: 200,
+    borderRadius: 10,
+    marginTop: 10,
+    resizeMode: 'cover',
   },
 });
 
@@ -241,6 +266,7 @@ const pickerSelectStyles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 10,
+    backgroundColor: '#f9f9f9',
     color: 'black',
   },
   inputAndroid: {
@@ -250,6 +276,7 @@ const pickerSelectStyles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 10,
+    backgroundColor: '#f9f9f9',
     color: 'black',
   },
 });

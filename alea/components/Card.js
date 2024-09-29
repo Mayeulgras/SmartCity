@@ -22,12 +22,11 @@ const Card = ({ data, onClose }) => {
       </TouchableOpacity>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <Text style={styles.title}>{data.nom_complet}</Text>
-        <Text style={styles.description}>{data.adresse}</Text>
-        <Text style={styles.code}>{data.code_postal}</Text>
+        <Text style={styles.description}>{data.adresse}, {data.code_postal}</Text>
         <TouchableOpacity style={styles.button} onPress={() => setShowForm(true)}>
           <Text style={styles.buttonText}>Signaler un problème</Text>
         </TouchableOpacity>
-        {showForm && <Form setShowForm={setShowForm} nomComplet={data.nom_complet} IdObj={data.id}/>}
+        {showForm && <Form setShowForm={setShowForm} nomComplet={data.nom_complet} IdObj={data.id} />}
         {alertes.length > 0 ? (
           <AlertList setAlertes={setAlertes} alertes={alertes} onDeleteAlerte={handleDeleteAlerte} />
         ) : (
@@ -77,11 +76,16 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#FF0000',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    borderRadius: 25,
     alignItems: 'center',
     marginVertical: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
   },
   buttonText: {
     color: 'white',

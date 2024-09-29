@@ -35,7 +35,7 @@ const AlertList = ({ alertes, setAlertes }) => {
         );
         setAlertes(updatedAlertes);
 
-        Alert.alert("Succès", "L'alerte a été déconnectée du parc.");
+        Alert.alert("Succès", "L'alerte a été déconnectée du parc.\n \nRechargez l'application pour voir les changements !", [{ text: 'OK' }]);
       } else {
         Alert.alert("Aucune alerte trouvée", "Aucune alerte ne correspond à cette description.");
       }
@@ -73,7 +73,7 @@ const AlertList = ({ alertes, setAlertes }) => {
 
         // Vérifier si l'alerte a déjà été cliquée
         if (clickedAlerts.includes(documentId)) {
-          Alert.alert("Info", "Vous avez déjà incrémenté cette alerte.");
+          Alert.alert("Info", "Vous avez déjà soumis l'information.");
           return; // Ne pas incrémenter à nouveau
         }
 
@@ -94,7 +94,7 @@ const AlertList = ({ alertes, setAlertes }) => {
         )
       );
 
-      Alert.alert("Succès", "Le compteur de vues a été incrémenté.");
+      Alert.alert("Succès", "Merci de votre participation.\n \nl'information a bien été prise en compte.");
       console.log('Compteur de vues incrémenté avec succès pour l\'alerte:', documentId);
     } catch (error) {
       console.error('Erreur lors de l\'incrémentation du compteur de vues:', error.response ? error.response.data : error.message);
@@ -119,7 +119,7 @@ const AlertList = ({ alertes, setAlertes }) => {
             style={styles.deleteButton}
             onPress={() => confirmDelete(alerte.description)}
           >
-            <Ionicons name="close-circle" size={24} color="red" />
+            <Ionicons name="close-circle" size={24} color="black" />
           </TouchableOpacity>
 
           <Text style={styles.alertTitle}>{alerte.category}</Text>
@@ -132,18 +132,13 @@ const AlertList = ({ alertes, setAlertes }) => {
             />
           )}
           <TouchableOpacity style={styles.incrementButton} onPress={() => incrementViewCount(alerte.documentId)}>
-            <Text style={styles.buttonText}>Incrémenter le compteur</Text>
+            <Text style={styles.buttonText}>Le problème est encore là !</Text>
           </TouchableOpacity>
         </View>
       ))}
     </View>
   );
 };
-
-
-
-
-
 
 const styles = StyleSheet.create({
   container: {
@@ -173,7 +168,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 5,
-    fontSize: 16,
+    fontSize: 20, 
   },
   alertDescription: {
     color: '#666',
@@ -183,12 +178,25 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 200,
     marginTop: 10,
+    borderRadius: 15,
   },
   incrementButton: {
     backgroundColor: '#007BFF',
-    padding: 10,
-    borderRadius: 5,
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    borderRadius: 25,
     alignItems: 'center',
+    marginTop: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

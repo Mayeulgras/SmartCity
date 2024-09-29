@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { StyleSheet, View, Modal, ActivityIndicator, Image } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import axios from 'axios';
 import Card from './Card';
 
-export default function Map({ searchQuery }) {
+
+export default function Map({ searchQuery, userLocation }) {
   const [markers, setMarkers] = useState([]);
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [loading, setLoading] = useState(true);
   const [centeredMarker, setCenteredMarker] = useState(null);
+  const mapRef = useRef(null);
 
   useEffect(() => {
     const fetchAllParks = async () => {
@@ -30,7 +32,7 @@ export default function Map({ searchQuery }) {
           const mergedMarkers = fetchedMarkers.map((marker, index) => {
             const alertes = fetchedAlertes[index]?.alertes.map(alerte => ({
               ...alerte,
-              photoName: alerte.photo?.name || null, // Inclure le champ name des photos
+              photoName: alerte.photo?.name || null,
             })) || [];
             return {
               ...marker,
@@ -62,19 +64,38 @@ export default function Map({ searchQuery }) {
     fetchAllParks();
   }, []);
 
+
+
+
+  useEffect(() => {
+    if (userLocation && mapRef.current) {
+      mapRef.current.animateToRegion({
+        latitude: userLocation.latitude,
+        longitude: userLocation.longitude,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+      }, 1000); // Animation de 1 seconde
+    }
+  }, [userLocation]);
+
+
+
+
+
   useEffect(() => {
     if (searchQuery) {
       const foundMarker = markers.find(marker => 
         marker.nom_complet.toLowerCase().includes(searchQuery.toLowerCase())
       );
 
-      if (foundMarker) {
-        setCenteredMarker(foundMarker);
-      } else {
-        setCenteredMarker(null);
+      if (foundMarker && mapRef.current) {
+        mapRef.current.animateToRegion({
+          latitude: foundMarker.location.lat,
+          longitude: foundMarker.location.lon,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
+        }, 1000);
       }
-    } else {
-      setCenteredMarker(null);
     }
   }, [searchQuery, markers]);
 
@@ -97,6 +118,7 @@ export default function Map({ searchQuery }) {
   return (
     <View style={styles.container}>
       <MapView
+        ref={mapRef}  // Assigner la référence à MapView
         style={styles.map}
         initialRegion={{
           latitude: 47.21698677752293,
@@ -104,12 +126,8 @@ export default function Map({ searchQuery }) {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
-        region={centeredMarker ? {
-          latitude: centeredMarker.location.lat,
-          longitude: centeredMarker.location.lon,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01,
-        } : undefined}
+        showsUserLocation={true}
+        showsMyLocationButton={false}
       >
         {markers.map((marker, index) => (
           <Marker
@@ -119,8 +137,7 @@ export default function Map({ searchQuery }) {
               longitude: marker.location.lon,
             }}
             onPress={() => handleMarkerPress(marker)}
-          >
-          </Marker>
+          />
         ))}
       </MapView>
 
@@ -151,10 +168,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  markerImage: {
-    width: 30,
-    height: 30,
-    resizeMode: 'contain',
   },
 });
