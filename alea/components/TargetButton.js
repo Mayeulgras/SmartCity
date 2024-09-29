@@ -14,7 +14,7 @@ const TargetButton = ({ onLocationRetrieved }) => {
         return;
       }
 
-      // Récupère la position actuelle
+      // Récupération de la position actuelle
       let location = await Location.getCurrentPositionAsync({});
       if (onLocationRetrieved) {
         onLocationRetrieved(location.coords); // Passe les coordonnées récupérées à la fonction callback
@@ -34,12 +34,12 @@ const TargetButton = ({ onLocationRetrieved }) => {
 const styles = StyleSheet.create({
   button: {
     position: 'absolute',
-    bottom: 20, // Positionne le bouton en bas de l'écran
-    right: 20, // Positionne le bouton à droite de l'écran
+    bottom: 20, 
+    right: 20, 
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: '#007AFF', // Couleur du bouton
+    backgroundColor: '#007AFF',
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 5,

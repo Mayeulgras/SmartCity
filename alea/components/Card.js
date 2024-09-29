@@ -8,10 +8,9 @@ const { height } = Dimensions.get('window');
 
 const Card = ({ data, onClose }) => {
   const [showForm, setShowForm] = useState(false);
-  const [alertes, setAlertes] = useState(data.alertes || []); // Initialize alertes with data.alertes
+  const [alertes, setAlertes] = useState(data.alertes || []); 
 
   const handleDeleteAlerte = (id) => {
-    // Remove the alert with the given id from the alertes array
     setAlertes((prevAlertes) => prevAlertes.filter((alerte) => alerte.id !== id));
   };
 

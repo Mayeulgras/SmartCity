@@ -12,26 +12,26 @@ const uploadImage = async (imageUri) => {
 
     if (fileInfo.exists) {
       const formData = new FormData();
-      const fileName = `image_${Date.now()}.jpeg`; // Nom du fichier
-      const mimeType = 'image/jpeg'; // Type MIME
+      const fileName = `image_${Date.now()}.jpeg`;
+      const mimeType = 'image/jpeg'; 
 
-      // Ajout de l'image au formData
+     
       formData.append('files', {
         uri: fileInfo.uri,
         name: fileName,
         type: mimeType,
       });
 
-      // Envoyer l'image à Strapi
+      
       const response = await axios.post("http://192.168.0.12:1337/api/upload", formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
-      // Récupérer l'ID de l'image
-      const uploadedImage = response.data[0]; // Assurez-vous que c'est la bonne structure
-      return uploadedImage.id; // Retourner l'ID de l'image
+      
+      const uploadedImage = response.data[0];
+      return uploadedImage.id; 
     } else {
       throw new Error("Le fichier image n'existe pas.");
     }
@@ -41,12 +41,10 @@ const uploadImage = async (imageUri) => {
   }
 };
 
-// Fonction pour poster les données de l'alerte avec l'ID de l'image
 const PostInfo = async (data) => {
   try {
     const formData = new FormData();
 
-    // Télécharge l'image et récupère son ID
     const imageId = data.image ? await uploadImage(data.image) : null;
 
     const alertData = {
@@ -54,13 +52,12 @@ const PostInfo = async (data) => {
       description: data.description,
       nom_complet: data.nom_complet,
       parcs: [{ id: data.id }],
-      photo: imageId, // Utiliser l'ID de l'image ici
+      photo: imageId,
       viewCount: 1
     };
 
     console.log('Données de l\'alerte avant ajout au formData:', alertData);
 
-    // Ajouter les données d'alerte dans le formData
     Object.keys(alertData).forEach(key => {
       if (key === 'parcs') {
         formData.append(`data[${key}][0][id]`, alertData[key][0].id);
@@ -69,7 +66,6 @@ const PostInfo = async (data) => {
       }
     });
 
-    // Envoyer les données d'alerte à l'API
     const response = await axios.post("http://192.168.0.12:1337/api/alertes?populate=*", formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -189,7 +185,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   closeButton: {
-    alignSelf: 'flex-end', // Aligner à droite
+    alignSelf: 'flex-end', 
     marginBottom: 10,
   },
   label: {
@@ -235,7 +231,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#4285F4',
     paddingVertical: 12,
     paddingHorizontal: 20,
-    borderRadius: 25, // Arrondir les bords du bouton "Envoyer l'alerte"
+    borderRadius: 25,
     alignItems: 'center',
     marginVertical: 10,
     shadowColor: '#000',

@@ -36,7 +36,7 @@ export default function Map({ searchQuery, userLocation }) {
             })) || [];
             return {
               ...marker,
-              alertes, // Inclure les alertes dans le marqueur
+              alertes, 
             };
           });
 
@@ -74,7 +74,7 @@ export default function Map({ searchQuery, userLocation }) {
         longitude: userLocation.longitude,
         latitudeDelta: 0.01,
         longitudeDelta: 0.01,
-      }, 1000); // Animation de 1 seconde
+      }, 1000); 
     }
   }, [userLocation]);
 
@@ -118,7 +118,7 @@ export default function Map({ searchQuery, userLocation }) {
   return (
     <View style={styles.container}>
       <MapView
-        ref={mapRef}  // Assigner la référence à MapView
+        ref={mapRef}  
         style={styles.map}
         initialRegion={{
           latitude: 47.21698677752293,

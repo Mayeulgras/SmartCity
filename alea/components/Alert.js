@@ -4,16 +4,11 @@ import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 
 
-
-
-
-
 const AlertList = ({ alertes, setAlertes }) => {
 
 
   const disconnectAlert = async (description) => {
     try {
-      // Récupérer toutes les alertes de la collection
       const response = await axios.get("http://192.168.0.12:1337/api/alertes?populate=*");
       const alertes = response.data.data;
 
@@ -26,10 +21,8 @@ const AlertList = ({ alertes, setAlertes }) => {
       if (alertToDisconnect) {
         console.log(`Déconnexion de l'alerte avec le documentId ${alertToDisconnect.documentId} et la description ${alertToDisconnect.description}`);
 
-        // Effectuer une requête DELETE pour déconnecter l'alerte du parc
         await axios.delete(`http://192.168.0.12:1337/api/alertes/${alertToDisconnect.documentId}`);
 
-        // Mettre à jour l'état des alertes pour refléter la déconnexion
         const updatedAlertes = alertes.map((alerte) =>
           alerte.documentId === alertToDisconnect.documentId ? { ...alerte, parcs: [] } : alerte
         );
@@ -71,14 +64,12 @@ const AlertList = ({ alertes, setAlertes }) => {
   const incrementViewCount = async (documentId) => {
     try {
 
-        // Vérifier si l'alerte a déjà été cliquée
         if (clickedAlerts.includes(documentId)) {
           Alert.alert("Info", "Vous avez déjà soumis l'information.");
-          return; // Ne pas incrémenter à nouveau
+          return; 
         }
 
       const alerteToUpdate = alertes.find(alerte => alerte.documentId === documentId)
-      // Effectuer une requête PUT pour incrémenter le viewCount
       await axios.put(`http://192.168.0.12:1337/api/alertes/${documentId}`, {
         data: {
           viewCount: alerteToUpdate.viewCount + 1,
@@ -87,7 +78,6 @@ const AlertList = ({ alertes, setAlertes }) => {
 
       setClickedAlerts((prevClicked) => [...prevClicked, documentId]);
 
-      // Mettre à jour l'état local si nécessaire
       setAlertes(prevAlertes =>
         prevAlertes.map(alerte =>
           alerte.documentId === documentId ? { ...alerte, viewCount: alerte.viewCount + 1 } : alerte
@@ -114,7 +104,6 @@ const AlertList = ({ alertes, setAlertes }) => {
     <View style={styles.container}>
       {alertes.map((alerte) => (
         <View key={alerte.id} style={styles.alertContainer}>
-          {/* Icône pour supprimer l'alerte */}
           <TouchableOpacity
             style={styles.deleteButton}
             onPress={() => confirmDelete(alerte.description)}

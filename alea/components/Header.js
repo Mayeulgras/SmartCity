@@ -13,44 +13,44 @@ const Header = ({ title }) => {
 
 const styles = StyleSheet.create({
   header: {
-    position: 'absolute', // Positionne le header en absolu
-    top: 0, // Fixe le header en haut de l'écran
+    position: 'absolute', 
+    top: 0, 
     left: 0,
     right: 0,
     height: 90,
-    backgroundColor: '#f8f9fa', // Couleur de fond plus douce
+    backgroundColor: '#f8f9fa', 
     padding: 15,
-    elevation: 5, // Ombre plus prononcée
+    elevation: 5, 
     borderBottomLeftRadius: 25,
     borderBottomRightRadius: 25,
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderColor: '#e0e0e0', // Couleur de bordure
+    borderColor: '#e0e0e0', 
     borderWidth: 1,
   },
   headerText: {
     marginTop: 20,
-    fontSize: 24, // Taille du texte
-    fontWeight: '700', // Poids de la police
+    fontSize: 24, 
+    fontWeight: '700', 
     flex: 1,
     textAlign: 'center',
-    color: '#343a40', // Couleur de texte
+    color: '#343a40', 
   },
   logo: {
     marginTop: 20,
-    width: 35, // Réduit la taille du logo
+    width: 35, 
     height: 35,
     resizeMode: 'contain',
   },
   avatar: {
     marginTop: 20,
-    width: 35, // Réduit la taille de l'avatar
+    width: 35, 
     height: 35,
-    borderRadius: 17.5, // Rendre l'avatar parfaitement rond
+    borderRadius: 17.5, 
     resizeMode: 'cover',
-    borderWidth: 1, // Ajouter une bordure à l'avatar
-    borderColor: '#dee2e6', // Couleur de la bordure de l'avatar
+    borderWidth: 1, 
+    borderColor: '#dee2e6', 
   },
 });
 

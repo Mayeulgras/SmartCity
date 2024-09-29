@@ -7,15 +7,15 @@ import Header from '../components/Header';
 
 export default function HomeScreen() {
 
-  // état qui va contenir la valeur de la recherche
+  
   const [searchQuery, setSearchQuery] = useState('');
   const [userLocation, setUserLocation] = useState(null);
 
   const handleLocationRetrieved = (coords) => {
-    setUserLocation(coords); // Stocke la localisation de l'utilisateur
+    setUserLocation(coords); 
   };
 
-  // Vue avec la SearchBar flottant au-dessus de la Map
+  
   return (
     <View style={styles.container}>
       <Header title="Alea" />
@@ -28,6 +28,6 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, // Le conteneur prend tout l'écran
+    flex: 1, 
   },
 });
